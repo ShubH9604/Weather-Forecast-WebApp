@@ -18,7 +18,7 @@
         }
         .container {
             text-align: center;
-            background: rgba(0, 0, 0, 0.7);
+            background: black;
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0 0 20px #ffffff80;
@@ -144,36 +144,36 @@
         }
         .chart-container {
             position: absolute;
-            top: 75px;
-            width: 370px;
-            height: 220px;
+            top: 140px;
+            width: 375px;
+            height: 240px;
             box-sizing: border-box;
             padding: 10px;
-            background: rgba(0, 0, 0, 0.8);
+            background: black;
             border-radius: 12px;
             display: none;
         }
         #temperature-chart {
             position: absolute;
-            top: 75px;
+            top: 140px;
             right: 30px;
-            width: 370px;
-            height: 220px;
+            width: 375px;
+            height: 240px;
             box-sizing: border-box;
             padding: 10px;
-            background: rgba(0, 0, 0, 0.8);
+            background: black;
             border-radius: 12px;
             display: none;
         }
         #humidity-chart {
             position: absolute;
-            top: 75px;
+            top: 140px;
             left: 30px;
-            width: 370px;
-            height: 220px;
+            width: 375px;
+            height: 240px;
             box-sizing: border-box;
             padding: 10px;
-            background: rgba(0, 0, 0, 0.8);
+            background: black;
             border-radius: 12px;
             display: none;
         }
@@ -278,15 +278,15 @@
                 dayDiv.className = 'day';
                 dayDiv.innerHTML = `
                     <div class="summary">
-                        <h4>${formattedDate}</h4>
-                        <img src="${icon}" alt="${weatherDescription}">
-                        <h4>${temp}°C</h4>
+                        <p>${formattedDate}</p>
+                        <p><img src="${icon}" alt="${weatherDescription}"></p>
+                        <p>${temp}°C</p>
                     </div>
                     <div class="details">
-                        <h4>${formattedDate}</h4>
                         <p>Humidity: ${humidity}%</p>
+                        <p><img src="${icon}" alt="${weatherDescription}"></p>
                         <p>Wind: ${windSpeed} m/s</p>
-                        <img src="${icon}" alt="${weatherDescription}">
+                        
                     </div>
                 `;
 
@@ -326,8 +326,10 @@
                                 display: true,
                                 text: 'Time (24-hour format)'
                             }
+                            
                         },
                         y: {
+                            beginAtZero: true,
                             title: {
                                 display: true,
                                 text: 'Temperature (°C)'
