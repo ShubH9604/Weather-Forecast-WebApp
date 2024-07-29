@@ -64,11 +64,6 @@
             position: relative;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
-        .weather-info .day:hover {
-            transform: scale(1.05);
-            background: #ffffff;
-            color: #000000;
-        }
         .weather-info .day .summary {
             display: block;
         }
@@ -86,17 +81,9 @@
             box-sizing: border-box;
             text-align: center;
             font-size: 0.9em;
-            display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-        }
-        .weather-info .day .details div {
-            margin-bottom: 5px;
-        }
-        .weather-info .day img {
-            width: 40px;
-            height: 40px;
         }
         .weather-info .day:hover .details {
             display: flex;
@@ -177,9 +164,9 @@
             const mainWeatherIcon = `https://openweathermap.org/img/wn/${currentWeather.weather[0].icon}.png`;
             const mainWindSpeed = currentWeather.wind.speed;
             const mainHumidity = currentWeather.main.humidity;
-            const currentDateTime = new Date(currentWeather.dt * 1000);
-            const formattedDate = currentDateTime.toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' });
-            const formattedTime = currentDateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const searchDateTime = new Date();
+            const formattedDate = searchDateTime.toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' });
+            const formattedTime = searchDateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
             mainWeatherDiv.innerHTML = `
                 <h2>${city}, ${country}</h2>
@@ -190,7 +177,19 @@
                 <p><strong>Humidity:</strong> ${mainHumidity}%</p>
             `;
 
-            for (let i = 0; i < data.list.length; i += 8) {
+            // Skip the current day and start displaying from the next day
+            const today = new Date().setHours(0, 0, 0, 0);
+            let startIndex = 0;
+            for (let i = 0; i < data.list.length; i++) {
+                const dayData = data.list[i];
+                const date = new Date(dayData.dt * 1000).setHours(0, 0, 0, 0);
+                if (date > today) {
+                    startIndex = i;
+                    break;
+                }
+            }
+
+            for (let i = startIndex; i < data.list.length; i += 8) {
                 const dayData = data.list[i];
                 const date = new Date(dayData.dt * 1000).toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' });
                 const temp = Math.round(dayData.main.temp); // Rounded temperature
@@ -210,23 +209,19 @@
                     <div class="details">
                         <div><span>Humidity:</span> ${humidity}%</div>
                         <img src="${weatherIcon}" alt="${weatherDescription}"><br>
-                        <div><span>Wind Speed:</span> ${windSpeed} m/s</div>
+                        <div><span>Wind:</span> ${windSpeed} m/s</div>
                     </div>
                 `;
-                dayDiv.addEventListener('mouseover', () => showDetails(dayDiv));
-                dayDiv.addEventListener('mouseout', () => hideDetails(dayDiv));
+                dayDiv.addEventListener('mouseover', () => {
+                    dayDiv.querySelector('.details').style.display = 'flex';
+                    dayDiv.querySelector('.summary').style.display = 'none';
+                });
+                dayDiv.addEventListener('mouseout', () => {
+                    dayDiv.querySelector('.details').style.display = 'none';
+                    dayDiv.querySelector('.summary').style.display = 'block';
+                });
                 weatherInfoDiv.appendChild(dayDiv);
             }
-        }
-
-        function showDetails(dayDiv) {
-            dayDiv.querySelector('.summary').style.display = 'none';
-            dayDiv.querySelector('.details').style.display = 'flex';
-        }
-
-        function hideDetails(dayDiv) {
-            dayDiv.querySelector('.summary').style.display = 'block';
-            dayDiv.querySelector('.details').style.display = 'none';            
         }
     </script>
 </body>
