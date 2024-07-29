@@ -277,96 +277,110 @@
     const labels = [];
     const temperatures = [];
 
-    // Get the date for the searched day
     const searchedDay = new Date();
-    searchedDay.setHours(0, 0, 0, 0); // Set to start of the day
+    searchedDay.setHours(0, 0, 0, 0);
 
-    // Filter the data to include only the hourly data for the searched day
     data.list.forEach(item => {
         const itemDate = new Date(item.dt * 1000);
         if (itemDate.toDateString() === searchedDay.toDateString()) {
-            labels.push(itemDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+            labels.push(itemDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }));
             temperatures.push(Math.round(item.main.temp));
         }
     });
 
     new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Temperature (°C)',
-                data: temperatures,
-                borderColor: '#1E90FF', // Change border color
-                backgroundColor: 'rgba(30, 144, 255, 0.3)', // Change background color
-                borderWidth: 3, // Thicker border
-                pointRadius: 4, // Larger points
-                pointBackgroundColor: '#1E90FF', // Point color
-                pointBorderColor: '#ffffff', // Point border color
-                pointBorderWidth: 2 // Point border width
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Time',
-                        color: 'white',
-                        font: {
-                            size: 14,
-                            weight: 'bold'
-                        }
-                    },
-                    ticks: {
-                        color: 'white',
-                        font: {
-                            size: 12
-                        }
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: 'Temperature (°C)',
+            data: temperatures,
+            borderColor: '#FF0000', // Red border color
+            backgroundColor: 'rgba(255, 0, 0, 0.4)', // Red area color
+            borderWidth: 3,
+            pointRadius: 4,
+            pointBackgroundColor: '#FF0000',
+            pointBorderColor: '#ffffff',
+            pointBorderWidth: 2
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            x: {
+                grid: {
+                    display: false // Hide grid lines
+                },
+                border: {
+                    color: '#ffffff', // Axis line color
+                    width: 1 // Axis line width
+                },
+                title: {
+                    display: true,
+                    text: 'Time',
+                    color: 'white',
+                    font: {
+                        size: 14,
+                        weight: 'bold'
                     }
                 },
-                y: {
-                    title: {
-                        display: true,
-                        text: 'Temperature (°C)',
-                        color: 'white',
-                        font: {
-                            size: 14,
-                            weight: 'bold'
-                        }
-                    },
-                    ticks: {
-                        color: 'white',
-                        font: {
-                            size: 12
-                        },
-                        callback: function(value) {
-                            return value + '°C'; // Append °C to tick labels
-                        }
+                ticks: {
+                    color: 'white',
+                    font: {
+                        size: 12
                     }
                 }
             },
-            plugins: {
-                legend: {
-                    labels: {
-                        color: 'white',
-                        font: {
-                            size: 14,
-                            weight: 'bold'
-                        }
+            y: {
+                grid: {
+                    display: false // Hide grid lines
+                },
+                border: {
+                    color: '#ffffff', // Axis line color
+                    width: 1 // Axis line width
+                },
+                title: {
+                    display: true,
+                    text: 'Temperature (°C)',
+                    color: 'white',
+                    font: {
+                        size: 14,
+                        weight: 'bold'
                     }
                 },
-                tooltip: {
-                    backgroundColor: 'rgba(0, 0, 0, 0.7)', // Dark background for tooltip
-                    titleColor: 'white',
-                    bodyColor: 'white',
-                    footerColor: 'white'
+                ticks: {
+                    color: 'white',
+                    font: {
+                        size: 12
+                    },
+                    stepSize: 2,
+                    min: 0,
+                    max: Math.max(...temperatures) + 5
                 }
             }
+        },
+        plugins: {
+            legend: {
+                labels: {
+                    color: 'white',
+                    font: {
+                        size: 14,
+                        weight: 'bold'
+                    }
+                }
+            },
+            tooltip: {
+                backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                titleColor: 'white',
+                bodyColor: 'white',
+                footerColor: 'white'
+            }
         }
-    });
+    }
+});
+
+
 }
 
     </script>
