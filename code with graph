@@ -70,8 +70,8 @@
             background: #1a1a1a;
             border: 1px solid #ffffff;
             border-radius: 12px;
-            width: 135px;
-            height: 135px;
+            width: 140px;
+            height: 130px;
             text-align: center;
             cursor: pointer;
             position: relative;
@@ -147,10 +147,10 @@
         }
         .chart-container {
             position: absolute;
-            top: 80px;
+            top: 75px;
             right: 30px;
-            width: 350px;
-            height: 200px;
+            width: 370px;
+            height: 220px;
             box-sizing: border-box;
             padding: 10px;
             background: rgba(0, 0, 0, 0.8);
@@ -273,115 +273,72 @@
         }
 
         function renderChart(data) {
-    const ctx = document.getElementById('weather-chart').getContext('2d');
-    const labels = [];
-    const temperatures = [];
+            const chartCanvas = document.getElementById('weather-chart').getContext('2d');
+            const chartLabels = [];
+            const chartTemps = [];
 
-    const searchedDay = new Date();
-    searchedDay.setHours(0, 0, 0, 0);
+            // Get the searched date
+            const searchDateStr = data.list[0].dt_txt.split(' ')[0]; // The date of the searched day
+            const searchDate = new Date(searchDateStr).toISOString().split('T')[0];
 
-    data.list.forEach(item => {
-        const itemDate = new Date(item.dt * 1000);
-        if (itemDate.toDateString() === searchedDay.toDateString()) {
-            labels.push(itemDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false }));
-            temperatures.push(Math.round(item.main.temp));
+            // Filter hourly data for the searched date
+            const hourlyData = data.list.filter(item => item.dt_txt.startsWith(searchDate));
+
+            hourlyData.forEach(item => {
+            const date = new Date(item.dt_txt);
+            const temp = Math.round(item.main.temp);
+
+            chartLabels.push(`${date.getHours()}:00`);
+            chartTemps.push(temp);
+        });
+
+        new Chart(chartCanvas, {
+        type: 'line',
+        data: {
+            labels: chartLabels,
+            datasets: [{
+                label: 'Temp(°C)',
+                data: chartTemps,
+                borderColor: 'red',
+                backgroundColor: '#1a1a1a',
+                fill: true,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Time (Hrs)'
+                    },
+                    grid: {
+                        drawOnChartArea: true,
+                        drawTicks: true,
+                        color: 'rgba(255, 255, 255, 0.2)',
+                        lineWidth: 1
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Temperature (°C)'
+                    },
+                    grid: {
+                        drawOnChartArea: true,
+                        drawTicks: true,
+                        color: 'rgba(255, 255, 255, 0.2)',
+                        lineWidth: 1
+                    }
+                }
+            }
         }
     });
-
-    new Chart(ctx, {
-    type: 'line',
-    data: {
-        labels: labels,
-        datasets: [{
-            label: 'Temperature (°C)',
-            data: temperatures,
-            borderColor: '#FF0000', // Red border color
-            backgroundColor: 'rgba(255, 0, 0, 0.4)', // Red area color
-            borderWidth: 3,
-            pointRadius: 4,
-            pointBackgroundColor: '#FF0000',
-            pointBorderColor: '#ffffff',
-            pointBorderWidth: 2
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-            x: {
-                grid: {
-                    display: false // Hide grid lines
-                },
-                border: {
-                    color: '#ffffff', // Axis line color
-                    width: 1 // Axis line width
-                },
-                title: {
-                    display: true,
-                    text: 'Time',
-                    color: 'white',
-                    font: {
-                        size: 14,
-                        weight: 'bold'
-                    }
-                },
-                ticks: {
-                    color: 'white',
-                    font: {
-                        size: 12
-                    }
-                }
-            },
-            y: {
-                grid: {
-                    display: false // Hide grid lines
-                },
-                border: {
-                    color: '#ffffff', // Axis line color
-                    width: 1 // Axis line width
-                },
-                title: {
-                    display: true,
-                    text: 'Temperature (°C)',
-                    color: 'white',
-                    font: {
-                        size: 14,
-                        weight: 'bold'
-                    }
-                },
-                ticks: {
-                    color: 'white',
-                    font: {
-                        size: 12
-                    },
-                    stepSize: 2,
-                    min: 0,
-                    max: Math.max(...temperatures) + 5
-                }
-            }
-        },
-        plugins: {
-            legend: {
-                labels: {
-                    color: 'white',
-                    font: {
-                        size: 14,
-                        weight: 'bold'
-                    }
-                }
-            },
-            tooltip: {
-                backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                titleColor: 'white',
-                bodyColor: 'white',
-                footerColor: 'white'
-            }
-        }
-    }
-});
-
-
 }
+
 
     </script>
 </body>
