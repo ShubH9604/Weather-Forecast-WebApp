@@ -71,7 +71,7 @@
             border: 1px solid #ffffff;
             border-radius: 12px;
             width: 135px;
-            height: 135px; /* Reduced width */
+            height: 135px;
             text-align: center;
             cursor: pointer;
             position: relative;
@@ -79,9 +79,9 @@
             overflow: hidden;
             transition: transform 0.4s, box-shadow 0.4s;
             display: flex;
-            flex-direction: column; /* Ensure vertical alignment of items */
-            justify-content: center; /* Center items vertically */
-            align-items: center; /* Center items horizontally */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
         .weather-info .day:hover {
             transform: scale(1.1);
@@ -118,16 +118,16 @@
             opacity: 0;
         }
         .weather-info .day .summary img {
-            width: 40px; /* Reduced size */
-            height: 40px; /* Reduced size */
+            width: 40px;
+            height: 40px;
             transition: transform 0.3s;
         }
         .weather-info .day:hover .summary img {
             transform: scale(1.2);
         }
         .weather-info .day .details img {
-            width: 30px; /* Reduced size */
-            height: 30px; /* Reduced size */
+            width: 30px;
+            height: 30px;
         }
         .main-weather {
             margin-bottom: 20px;
@@ -149,13 +149,13 @@
             position: absolute;
             top: 80px;
             right: 30px;
-            width: 350px; /* Reduced width */
-            height: 200px; /* Reduced height */
+            width: 350px;
+            height: 200px;
             box-sizing: border-box;
             padding: 10px;
             background: rgba(0, 0, 0, 0.8);
             border-radius: 12px;
-            display: none; /* Initially hide the chart container */
+            display: none;
         }
         canvas {
             width: 100% !important;
@@ -273,62 +273,102 @@
         }
 
         function renderChart(data) {
-            const ctx = document.getElementById('weather-chart').getContext('2d');
-            const labels = [];
-            const temperatures = [];
+    const ctx = document.getElementById('weather-chart').getContext('2d');
+    const labels = [];
+    const temperatures = [];
 
-            data.list.slice(0, 24).forEach((item) => {
-                labels.push(new Date(item.dt * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
-                temperatures.push(Math.round(item.main.temp));
-            });
+    // Get the date for the searched day
+    const searchedDay = new Date();
+    searchedDay.setHours(0, 0, 0, 0); // Set to start of the day
 
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Temperature (°C)',
-                        data: temperatures,
-                        borderColor: 'blue',
-                        backgroundColor: 'rgba(0, 0, 255, 0.2)',
-                        borderWidth: 2,
-                        pointRadius: 0,
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Time',
-                                color: 'white'
-                            },
-                            ticks: {
-                                color: 'white'
-                            }
-                        },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'Temperature (°C)',
-                                color: 'white'
-                            },
-                            ticks: {
-                                color: 'white'
-                            }
+    // Filter the data to include only the hourly data for the searched day
+    data.list.forEach(item => {
+        const itemDate = new Date(item.dt * 1000);
+        if (itemDate.toDateString() === searchedDay.toDateString()) {
+            labels.push(itemDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+            temperatures.push(Math.round(item.main.temp));
+        }
+    });
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Temperature (°C)',
+                data: temperatures,
+                borderColor: '#1E90FF', // Change border color
+                backgroundColor: 'rgba(30, 144, 255, 0.3)', // Change background color
+                borderWidth: 3, // Thicker border
+                pointRadius: 4, // Larger points
+                pointBackgroundColor: '#1E90FF', // Point color
+                pointBorderColor: '#ffffff', // Point border color
+                pointBorderWidth: 2 // Point border width
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Time',
+                        color: 'white',
+                        font: {
+                            size: 14,
+                            weight: 'bold'
                         }
                     },
-                    plugins: {
-                        legend: {
-                            labels: {
-                                color: 'white'
-                            }
+                    ticks: {
+                        color: 'white',
+                        font: {
+                            size: 12
+                        }
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Temperature (°C)',
+                        color: 'white',
+                        font: {
+                            size: 14,
+                            weight: 'bold'
+                        }
+                    },
+                    ticks: {
+                        color: 'white',
+                        font: {
+                            size: 12
+                        },
+                        callback: function(value) {
+                            return value + '°C'; // Append °C to tick labels
                         }
                     }
                 }
-            });
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        color: 'white',
+                        font: {
+                            size: 14,
+                            weight: 'bold'
+                        }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.7)', // Dark background for tooltip
+                    titleColor: 'white',
+                    bodyColor: 'white',
+                    footerColor: 'white'
+                }
+            }
         }
+    });
+}
+
     </script>
 </body>
 </html>
