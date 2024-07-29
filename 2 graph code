@@ -255,7 +255,7 @@
             const formattedTime = searchDateTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
             mainWeatherDiv.innerHTML = `
-                <h2>${city}, ${country}</h2>
+                <h2><strong>${city}, ${country}</strong></h2>
                 <p><strong>${formattedDate} | ${formattedTime}</strong></p>
                 <p><img src="${mainWeatherIcon}" alt="${mainWeather}"> <span><strong>${mainTemp}°C</strong></span></p>
                 <p><strong>${mainWeatherDescription.charAt(0).toUpperCase() + mainWeatherDescription.slice(1)}</strong></p>
@@ -278,14 +278,14 @@
                 dayDiv.className = 'day';
                 dayDiv.innerHTML = `
                     <div class="summary">
-                        <p>${formattedDate}</p>
-                        <p><img src="${icon}" alt="${weatherDescription}"></p>
-                        <p>${temp}°C</p>
+                        <p><strong>${formattedDate}</strong></p>
+                        <p><strong><img src="${icon}" alt="${weatherDescription}"></strong></p>
+                        <p><strong>${temp}°C</strong></p>
                     </div>
                     <div class="details">
-                        <p>Humidity: ${humidity}%</p>
-                        <p><img src="${icon}" alt="${weatherDescription}"></p>
-                        <p>Wind: ${windSpeed} m/s</p>
+                        <p><strong>Humidity: ${humidity}%</strong></p>
+                        <p><strong><img src="${icon}" alt="${weatherDescription}"></strong></p>
+                        <p><strong>Wind: ${windSpeed} m/s</strong></p>
                         
                     </div>
                 `;
