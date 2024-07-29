@@ -22,7 +22,8 @@
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0 0 20px #ffffff80;
-            width: 75%;
+            width: 80%; /* Slightly increased width */
+            max-width: 1200px;
         }
         .search-box {
             margin-bottom: 20px;
@@ -33,6 +34,11 @@
             border-radius: 4px;
             background-color: #ffffff;
             color: black;
+            transition: background-color 0.3s ease;
+        }
+        #city:focus {
+            background-color: #e0e0e0;
+            outline: none;
         }
         button {
             padding: 10px;
@@ -42,35 +48,39 @@
             border-radius: 4px;
             cursor: pointer;
             margin-left: 10px;
+            transition: background 0.3s ease, transform 0.3s ease;
         }
         button:hover {
             background: #007bff;
+            transform: scale(1.05);
         }
         .weather-info {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
+            margin-top: 20px;
         }
         .weather-info .day {
             margin: 10px;
             padding: 10px;
-            background: #000000;
+            background: #1a1a1a;
             border: 1px solid #ffffff;
             border-radius: 12px;
-            width: 150px;
+            width: 160px;
             text-align: center;
             cursor: pointer;
-            transition: transform 0.5s, background 0.5s, box-shadow 0.5s;
             position: relative;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            transition: transform 0.4s, box-shadow 0.4s;
         }
         .weather-info .day:hover {
-            transform: scale(1.05); /* Slightly enlarge the box */
-            background: #333333; /* Darken the background on hover */
+            transform: scale(1.1); /* Slightly enlarge the box */
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5); /* Increase the shadow on hover */
         }
         .weather-info .day .summary {
             display: block;
+            transition: opacity 0.3s;
         }
         .weather-info .day .details {
             display: none;
@@ -79,7 +89,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: #000000;
+            background: rgba(0, 0, 0, 0.9);
             color: white;
             padding: 10px;
             border-radius: 12px;
@@ -89,25 +99,35 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            transition: opacity 0.3s;
         }
         .weather-info .day:hover .details {
             display: flex;
+            opacity: 1;
         }
         .weather-info .day:hover .summary {
-            display: none;
+            opacity: 0;
         }
         .weather-info .day .summary img {
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
+            transition: transform 0.3s;
+        }
+        .weather-info .day:hover .summary img {
+            transform: scale(1.2);
         }
         .main-weather {
             margin-bottom: 20px;
             text-align: center;
         }
         .main-weather img {
-            width: 80px;
-            height: 80px;
+            width: 100px;
+            height: 100px;
             vertical-align: middle;
+            transition: transform 0.3s;
+        }
+        .main-weather img:hover {
+            transform: rotate(15deg);
         }
         .main-weather p {
             margin: 5px 0;
