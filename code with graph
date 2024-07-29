@@ -22,7 +22,7 @@
             padding: 20px;
             border-radius: 12px;
             box-shadow: 0 0 20px #ffffff80;
-            width: 80%;
+            width: 75%;
             max-width: 1000px;
             display: flex;
             flex-direction: column;
@@ -70,13 +70,18 @@
             background: #1a1a1a;
             border: 1px solid #ffffff;
             border-radius: 12px;
-            width: 140px; /* Reduced width */
+            width: 135px;
+            height: 135px; /* Reduced width */
             text-align: center;
             cursor: pointer;
             position: relative;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             overflow: hidden;
             transition: transform 0.4s, box-shadow 0.4s;
+            display: flex;
+            flex-direction: column; /* Ensure vertical alignment of items */
+            justify-content: center; /* Center items vertically */
+            align-items: center; /* Center items horizontally */
         }
         .weather-info .day:hover {
             transform: scale(1.1);
@@ -144,7 +149,7 @@
             position: absolute;
             top: 80px;
             right: 30px;
-            width: 400px; /* Reduced width */
+            width: 350px; /* Reduced width */
             height: 200px; /* Reduced height */
             box-sizing: border-box;
             padding: 10px;
@@ -253,9 +258,9 @@
                 weatherInfoDiv.innerHTML += `
                     <div class="day">
                         <div class="summary">
-                            <p>${date}</p>
+                            <p><strong>${date}</strong></p>
                             <img src="${weatherIcon}" alt="${weather}">
-                            <p>${temp}°C</p>
+                            <p><strong>${temp}°C</strong></p>
                         </div>
                         <div class="details">
                             <p><strong>Humidity:</strong> ${humidity}%</p>
