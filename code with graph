@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -23,10 +23,11 @@
             border-radius: 12px;
             box-shadow: 0 0 20px #ffffff80;
             width: 80%;
-            max-width: 1200px;
+            max-width: 1000px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            position: relative;
         }
         .search-box {
             margin-bottom: 20px;
@@ -69,7 +70,7 @@
             background: #1a1a1a;
             border: 1px solid #ffffff;
             border-radius: 12px;
-            width: 160px;
+            width: 140px; /* Reduced width */
             text-align: center;
             cursor: pointer;
             position: relative;
@@ -112,12 +113,16 @@
             opacity: 0;
         }
         .weather-info .day .summary img {
-            width: 50px;
-            height: 50px;
+            width: 40px; /* Reduced size */
+            height: 40px; /* Reduced size */
             transition: transform 0.3s;
         }
         .weather-info .day:hover .summary img {
             transform: scale(1.2);
+        }
+        .weather-info .day .details img {
+            width: 30px; /* Reduced size */
+            height: 30px; /* Reduced size */
         }
         .main-weather {
             margin-bottom: 20px;
@@ -136,15 +141,21 @@
             margin: 5px 0;
         }
         .chart-container {
-            margin-top: 20px;
-            padding: 20px;
-            width: 100%;
-            max-width: 600px;
+            position: absolute;
+            top: 80px;
+            right: 30px;
+            width: 400px; /* Reduced width */
+            height: 200px; /* Reduced height */
             box-sizing: border-box;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 12px;
+            display: none; /* Initially hide the chart container */
         }
         canvas {
             width: 100% !important;
-            height: auto !important;
+            height: 100% !important;
+            border: none;
         }
     </style>
 </head>
@@ -185,7 +196,8 @@
                 }
 
                 document.getElementById('forecast-heading').style.display = 'none';
-                document.getElementById('search-box').style.display = 'none';
+                document.getElementById('search-box').style.display = 'none'; // Hide search box after fetching data
+                document.querySelector('.chart-container').style.display = 'block'; // Show the chart container
                 displayWeather(data);
                 renderChart(data); // Add this line
             } catch (error) {
@@ -221,98 +233,91 @@
                 <p><strong>Humidity:</strong> ${mainHumidity}%</p>
             `;
 
-            // Skip the current day and start displaying from the next day
-            const today = new Date().setHours(0, 0, 0, 0);
-            let startIndex = 0;
-            for (let i = 0; i < data.list.length; i++) {
-                const dayData = data.list[i];
-                const date = new Date(dayData.dt * 1000).setHours(0, 0, 0, 0);
-                if (date > today) {
-                    startIndex = i;
-                    break;
-                }
-            }
+            // Get the next 5 days of weather data
+            const today = new Date();
+            const fiveDays = Array.from({ length: 5 }, (_, i) => {
+                const futureDate = new Date(today);
+                futureDate.setDate(today.getDate() + i + 1);
+                return futureDate.toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' });
+            });
 
-            for (let i = startIndex; i < data.list.length; i += 8) {
-                const dayData = data.list[i];
-                const date = new Date(dayData.dt * 1000).toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' });
-                const temp = Math.round(dayData.main.temp);
-                const weather = dayData.weather[0].main;
-                const weatherIcon = `https://openweathermap.org/img/wn/${dayData.weather[0].icon}.png`;
+            fiveDays.forEach((date, index) => {
+                const weatherData = data.list[index + 8]; // Get data for the next 5 days
+                const temp = Math.round(weatherData.main.temp);
+                const weather = weatherData.weather[0].main;
+                const weatherDescription = weatherData.weather[0].description;
+                const weatherIcon = `https://openweathermap.org/img/wn/${weatherData.weather[0].icon}.png`;
+                const windSpeed = weatherData.wind.speed;
+                const humidity = weatherData.main.humidity;
 
                 weatherInfoDiv.innerHTML += `
                     <div class="day">
                         <div class="summary">
                             <p>${date}</p>
                             <img src="${weatherIcon}" alt="${weather}">
-                            <p><strong>${temp}°C</strong></p>
+                            <p>${temp}°C</p>
                         </div>
                         <div class="details">
-                            <p><strong>${date}</strong></p>
-                            <p><strong>${weather}</strong></p>
-                            <p>Temp: ${temp}°C</p>
-                            <p>Humidity: ${dayData.main.humidity}%</p>
-                            <p>Wind: ${dayData.wind.speed} m/s</p>
+                            <p><strong>Humidity:</strong> ${humidity}%</p>
+                            <p><img src="${weatherIcon}" alt="${weather}"></p>
+                            <p><strong>Wind:</strong> ${windSpeed} m/s</p>                                           
                         </div>
                     </div>
                 `;
-            }
+            });
         }
 
         function renderChart(data) {
-            const chartCanvas = document.getElementById('weather-chart').getContext('2d');
-            const chartLabels = [];
-            const chartTemps = [];
+            const ctx = document.getElementById('weather-chart').getContext('2d');
+            const labels = [];
+            const temperatures = [];
 
-            // Skip the current day and start displaying from the next day
-            const today = new Date().setHours(0, 0, 0, 0);
-            let startIndex = 0;
-            for (let i = 0; i < data.list.length; i++) {
-                const dayData = data.list[i];
-                const date = new Date(dayData.dt * 1000).setHours(0, 0, 0, 0);
-                if (date > today) {
-                    startIndex = i;
-                    break;
-                }
-            }
+            data.list.slice(0, 24).forEach((item) => {
+                labels.push(new Date(item.dt * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+                temperatures.push(Math.round(item.main.temp));
+            });
 
-            for (let i = startIndex; i < data.list.length; i += 3) { // Adjust interval for hourly data
-                const dayData = data.list[i];
-                const date = new Date(dayData.dt * 1000);
-                const temp = Math.round(dayData.main.temp);
-
-                chartLabels.push(`${date.getHours()}:00`);
-                chartTemps.push(temp);
-            }
-
-            new Chart(chartCanvas, {
+            new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: chartLabels,
+                    labels: labels,
                     datasets: [{
                         label: 'Temperature (°C)',
-                        data: chartTemps,
-                        borderColor: '#66b3ff',
-                        backgroundColor: 'rgba(102, 179, 255, 0.2)',
-                        fill: true,
+                        data: temperatures,
+                        borderColor: 'blue',
+                        backgroundColor: 'rgba(0, 0, 255, 0.2)',
+                        borderWidth: 2,
+                        pointRadius: 0,
                     }]
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: false,
                     scales: {
                         x: {
-                            beginAtZero: true,
                             title: {
                                 display: true,
-                                text: 'Hour'
+                                text: 'Time',
+                                color: 'white'
+                            },
+                            ticks: {
+                                color: 'white'
                             }
                         },
                         y: {
-                            beginAtZero: true,
                             title: {
                                 display: true,
-                                text: 'Temperature (°C)'
+                                text: 'Temperature (°C)',
+                                color: 'white'
+                            },
+                            ticks: {
+                                color: 'white'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: 'white'
                             }
                         }
                     }
