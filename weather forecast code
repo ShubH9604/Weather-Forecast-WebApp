@@ -32,7 +32,7 @@
             border: 1px solid #ffffff;
             border-radius: 4px;
             background-color: #ffffff;
-            color: white;
+            color: black;
         }
         button {
             padding: 10px;
@@ -60,9 +60,14 @@
             width: 150px;
             text-align: center;
             cursor: pointer;
-            transition: transform 0.5s, background 0.5s;
+            transition: transform 0.5s, background 0.5s, box-shadow 0.5s;
             position: relative;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        .weather-info .day:hover {
+            transform: scale(1.05); /* Slightly enlarge the box */
+            background: #333333; /* Darken the background on hover */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5); /* Increase the shadow on hover */
         }
         .weather-info .day .summary {
             display: block;
@@ -212,14 +217,6 @@
                         <div><span>Wind:</span> ${windSpeed} m/s</div>
                     </div>
                 `;
-                dayDiv.addEventListener('mouseover', () => {
-                    dayDiv.querySelector('.details').style.display = 'flex';
-                    dayDiv.querySelector('.summary').style.display = 'none';
-                });
-                dayDiv.addEventListener('mouseout', () => {
-                    dayDiv.querySelector('.details').style.display = 'none';
-                    dayDiv.querySelector('.summary').style.display = 'block';
-                });
                 weatherInfoDiv.appendChild(dayDiv);
             }
         }
