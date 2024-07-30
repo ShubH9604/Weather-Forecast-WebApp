@@ -139,9 +139,6 @@
             vertical-align: middle;
             transition: transform 0.3s;
         }
-        .main-weather img:hover {
-            transform: rotate(15deg);
-        }
         .main-weather p {
             margin: 5px 0;
         }
@@ -259,7 +256,7 @@
                     <div class="day">
                         <div class="summary">
                             <p><strong>${date}</strong></p>
-                            <img src="${weatherIcon}" alt="${weather}">
+                            <p><img src="${weatherIcon}" alt="${weather}"></p>
                             <p><strong>${temp}°C</strong></p>
                         </div>
                         <div class="details">
@@ -293,16 +290,16 @@
         });
 
         new Chart(chartCanvas, {
-        type: 'line',
-        data: {
-            labels: chartLabels,
-            datasets: [{
-                label: 'Temp(°C)',
-                data: chartTemps,
-                borderColor: 'red',
-                backgroundColor: '#1a1a1a',
-                fill: true,
-            }]
+            type: 'line',
+            data: {
+                labels: chartLabels,
+                datasets: [{
+                    label: 'Temp(°C)',
+                    data: chartTemps,
+                    borderColor: 'red',
+                    backgroundColor: '#1a1a1a',
+                    fill: true,
+                }]
         },
         options: {
             responsive: true,
