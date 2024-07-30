@@ -141,9 +141,9 @@
         }
         .chart-container {
             position: absolute;
-            top: 140px;
-            width: 375px;
-            height: 240px;
+            top: 75px;
+            width: 370px;
+            height: 220px;
             box-sizing: border-box;
             padding: 10px;
             background: black;
@@ -254,41 +254,44 @@
             mainWeatherDiv.innerHTML = `
                 <h2><strong>${city}, ${country}</strong></h2>
                 <p><strong>${formattedDate} | ${formattedTime}</strong></p>
-                <p><img src="${mainWeatherIcon}" alt="${mainWeather}"> <span><strong>${mainTemp}°C</strong></span></p>
+                <p><strong><img src="${mainWeatherIcon}" alt="${mainWeather}"> <span>${mainTemp}°C</span></strong></p>
                 <p><strong>${mainWeatherDescription.charAt(0).toUpperCase() + mainWeatherDescription.slice(1)}</strong></p>
-                <p><strong>Wind: ${mainWindSpeed} m/s</strong></p>
-                <p><strong>Humidity: ${mainHumidity}%</strong></p>
+                <p><strong>Wind : ${mainWindSpeed} m/s</strong></p>
+                <p><strong>Humidity : ${mainHumidity}%</strong></p>
             `;
 
-            for (let i = 1; i <= 5; i++) {
-                const weather = data.list[i * 8 - 1];
-                const date = new Date(weather.dt_txt);
-                const options = { weekday: 'short', day: 'numeric', month: 'short' };
-                const formattedDate = date.toLocaleDateString(undefined, options);
-                const icon = `https://openweathermap.org/img/wn/${weather.weather[0].icon}.png`;
-                const temp = Math.round(weather.main.temp); // Rounded temperature
-                const weatherDescription = weather.weather[0].description;
-                const windSpeed = weather.wind.speed;
-                const humidity = weather.main.humidity;
+            // Get the next 5 days of weather data
+            const today = new Date();
+            const fiveDays = Array.from({ length: 5 }, (_, i) => {
+                const futureDate = new Date(today);
+                futureDate.setDate(today.getDate() + i + 1);
+                return futureDate.toLocaleDateString(undefined, { weekday: 'short', day: 'numeric', month: 'short' });
+            });
 
-                const dayDiv = document.createElement('div');
-                dayDiv.className = 'day';
-                dayDiv.innerHTML = `
-                    <div class="summary">
-                        <p><strong>${formattedDate}</strong></p>
-                        <p><strong><img src="${icon}" alt="${weatherDescription}"></strong></p>
-                        <p><strong>${temp}°C</strong></p>
-                    </div>
-                    <div class="details">
-                        <p><strong>Humidity: ${humidity}%</strong></p>
-                        <p><strong><img src="${icon}" alt="${weatherDescription}"></strong></p>
-                        <p><strong>Wind: ${windSpeed} m/s</strong></p>
-                        
+            fiveDays.forEach((date, index) => {
+                const weatherData = data.list[index + 8]; // Get data for the next 5 days
+                const temp = Math.round(weatherData.main.temp);
+                const weather = weatherData.weather[0].main;
+                const weatherDescription = weatherData.weather[0].description;
+                const weatherIcon = `https://openweathermap.org/img/wn/${weatherData.weather[0].icon}.png`;
+                const windSpeed = weatherData.wind.speed;
+                const humidity = weatherData.main.humidity;
+
+                weatherInfoDiv.innerHTML += `
+                    <div class="day">
+                        <div class="summary">
+                            <p><strong>${date}</strong></p>
+                            <p><strong><img src="${weatherIcon}" alt="${weather}"></strong></p>
+                            <p><strong>${temp}°C</strong></p>
+                        </div>
+                        <div class="details">
+                            <p><strong>Humidity : ${humidity}%</strong></p>
+                            <p><strong><img src="${weatherIcon}" alt="${weather}"></strong></p>
+                            <p><strong>Wind : ${windSpeed} m/s</strong></p>                                           
+                        </div>
                     </div>
                 `;
-
-                weatherInfoDiv.appendChild(dayDiv);
-            }
+            });
         }
 
         function renderTemperatureChart(data) {
@@ -389,4 +392,3 @@
     </script>
 </body>
 </html>
- 
