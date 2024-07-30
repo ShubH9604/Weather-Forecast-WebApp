@@ -379,32 +379,32 @@
                         pointRadius: 3 // Slightly smaller points
                     }]
                 },
-            options: {
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Time (24-hour format)',
-                            color: '#444'
+                options: {
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Time (24-hour format)',
+                                color: '#444'
+                            },
                         },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Humidity (%)',
+                                color: '#444'
+                            },
+                        }
                     },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'Humidity (%)',
-                            color: '#444'
-                        },
-                    }
-                },
-                plugins: {
-                    tooltip: {
-                        backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                        titleColor: '#fff',
-                        bodyColor: '#fff'
+                    plugins: {
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                            titleColor: '#fff',
+                            bodyColor: '#fff'
+                        }
                     }
                 }
-            }
-        });
+            });
         }
     </script>
 </body>
