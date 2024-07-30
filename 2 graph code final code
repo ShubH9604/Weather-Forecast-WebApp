@@ -296,7 +296,6 @@
 
         function renderTemperatureChart(data) {
             const tempCtx = document.getElementById('temp-chart').getContext('2d');
-            const searchDateTime = new Date();
             const hours = [];
             const temperatures = [];
 
@@ -315,8 +314,12 @@
                         label: 'Temperature (°C)',
                         data: temperatures,
                         borderColor: 'red',
-                        backgroundColor: 'rgba(255, 0, 0, 0.3)',
-                        fill: true
+                        backgroundColor: 'rgba(255, 0, 0, 0.3)', // Slightly lighter background
+                        fill: true,
+                        borderWidth: 2.5, // Slightly thinner border
+                        pointBackgroundColor: 'rgba(255, 0, 0, 0.3)',
+                        pointBorderColor: 'rgba(255, 0, 0, 0.5)',
+                        pointRadius: 3 // Slightly smaller points
                     }]
                 },
                 options: {
@@ -324,19 +327,24 @@
                         x: {
                             title: {
                                 display: true,
-                                text: 'Time (24-hour format)'
-                            }
-                            
+                                text: 'Time (24-hour format)',
+                                color: '#444'
+                            },
                         },
                         y: {
                             beginAtZero: true,
                             title: {
                                 display: true,
-                                text: 'Temperature (°C)'
+                                text: 'Temperature (°C)',
+                                color: '#444'
                             },
-                            ticks: {
-                                beginAtZero: true
-                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                            titleColor: '#fff',
+                            bodyColor: '#fff'
                         }
                     }
                 }
@@ -345,7 +353,6 @@
 
         function renderHumidityChart(data) {
             const humCtx = document.getElementById('hum-chart').getContext('2d');
-            const searchDateTime = new Date();
             const hours = [];
             const humidities = [];
 
@@ -364,30 +371,40 @@
                         label: 'Humidity (%)',
                         data: humidities,
                         borderColor: 'blue',
-                        backgroundColor: 'rgba(0, 0, 255, 0.3)',
-                        fill: true
+                        backgroundColor: 'rgba(0, 0, 255, 0.3)', // Slightly lighter background
+                        fill: true,
+                        borderWidth: 2.5, // Slightly thinner border
+                        pointBackgroundColor: 'rgba(0, 0, 255, 0.3)',
+                        pointBorderColor: 'rgba(0, 0, 255, 0.5)',
+                        pointRadius: 3 // Slightly smaller points
                     }]
                 },
-                options: {
-                    scales: {
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Time (24-hour format)'
-                            }
+            options: {
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Time (24-hour format)',
+                            color: '#444'
                         },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'Humidity (%)'
-                            },
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Humidity (%)',
+                            color: '#444'
+                        },
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                        titleColor: '#fff',
+                        bodyColor: '#fff'
                     }
                 }
-            });
+            }
+        });
         }
     </script>
 </body>
