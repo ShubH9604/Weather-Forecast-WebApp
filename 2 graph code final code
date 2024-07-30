@@ -139,9 +139,6 @@
             vertical-align: middle;
             transition: transform 0.3s;
         }
-        .main-weather img:hover {
-            transform: rotate(15deg);
-        }
         .chart-container {
             position: absolute;
             top: 140px;
