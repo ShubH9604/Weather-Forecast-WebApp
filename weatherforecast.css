@@ -1,0 +1,174 @@
+body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: url('https://cdn.pixabay.com/photo/2022/08/31/03/24/smoke-7422330_1280.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background: black;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px #ffffff80;
+            width: 75%;
+            max-width: 1000px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+        .search-box {
+            margin-bottom: 20px;
+        }
+        #city {
+            padding: 10px;
+            border: 1px solid #ffffff;
+            border-radius: 4px;
+            background-color: #ffffff;
+            color: black;
+            transition: background-color 0.3s ease;
+        }
+        #city:focus {
+            background-color: #e0e0e0;
+            outline: none;
+        }
+        button {
+            padding: 10px;
+            background: #66b3ff;
+            color: black;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+        button:hover {
+            background: #007bff;
+            transform: scale(1.05);
+        }
+        .weather-info {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .weather-info .day {
+            margin: 10px;
+            padding: 10px;
+            background: #1a1a1a;
+            border: 1px solid #ffffff;
+            border-radius: 12px;
+            width: 140px;
+            height: 130px;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            transition: transform 0.4s, box-shadow 0.4s;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .weather-info .day:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+        }
+        .weather-info .day .summary {
+            display: block;
+            transition: opacity 0.3s;
+        }
+        .weather-info .day .details {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 10px;
+            border-radius: 12px;
+            box-sizing: border-box;
+            text-align: center;
+            font-size: 0.9em;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.3s;
+        }
+        .weather-info .day:hover .details {
+            display: flex;
+            opacity: 1;
+        }
+        .weather-info .day:hover .summary {
+            opacity: 0;
+        }
+        .weather-info .day .summary img {
+            width: 40px;
+            height: 40px;
+            transition: transform 0.3s;
+        }
+        .weather-info .day:hover .summary img {
+            transform: scale(1.2);
+        }
+        .weather-info .day .details img {
+            width: 30px;
+            height: 30px;
+        }
+        .main-weather {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .main-weather img {
+            width: 100px;
+            height: 100px;
+            vertical-align: middle;
+            transition: transform 0.3s;
+        }
+        .chart-container {
+            position: absolute;
+            top: 75px;
+            width: 370px;
+            height: 220px;
+            box-sizing: border-box;
+            padding: 10px;
+            background: black;
+            border-radius: 12px;
+            display: none;
+        }
+        #temperature-chart {
+            position: absolute;
+            top: 140px;
+            right: 30px;
+            width: 375px;
+            height: 240px;
+            box-sizing: border-box;
+            padding: 10px;
+            background: black;
+            border-radius: 12px;
+            display: none;
+        }
+        #humidity-chart {
+            position: absolute;
+            top: 140px;
+            left: 30px;
+            width: 375px;
+            height: 240px;
+            box-sizing: border-box;
+            padding: 10px;
+            background: black;
+            border-radius: 12px;
+            display: none;
+        }
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+            border: none;
+        }
