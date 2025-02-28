@@ -4,6 +4,12 @@ A modern and responsive **Weather Forecast WebApp** that allows users to search 
 
 ---
 
+## 🔗 Live Demo
+
+[Check it out here] -> (https://weatherforecastscout.netlify.app/)
+
+---
+
 ## 🌟 Features
 
 ✅ **Search Any City**: Instantly fetch current weather data for any city across the world.
