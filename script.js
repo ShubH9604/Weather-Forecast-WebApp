@@ -1,4 +1,4 @@
-//main.js (Only the javascript code)
+//script.js (Only the javascript code)
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
